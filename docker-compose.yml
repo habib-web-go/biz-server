@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/data
+
+  server:
+    build: .
+    depends_on:
+      - redis
+    ports:
+      - "5052:5052"
+    restart: always
+
+volumes:
+  postgres-data:
