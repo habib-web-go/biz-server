@@ -12,14 +12,34 @@ services:
       - 5432:5432
     volumes:
       - postgres-data:/data
+      - ./postgres:/scripts:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
-  server:
-    build: .
+  init-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./postgres:/scripts:ro
     depends_on:
-      - redis
-    ports:
-      - "5052:5052"
-    restart: always
+      postgres:
+        condition: service_healthy
+    command: sh -c "PGPASSWORD=${POSTGRES_PASS} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h postgres -f /scripts/create_db.sql"
+  # server:
+  #   build: .
+  #   depends_on:
+  #     - postgres
+  #     - init-db
+  #   ports:
+  #     - "5052:5052"
+  #   restart: always
 
 volumes:
   postgres-data:
+  
