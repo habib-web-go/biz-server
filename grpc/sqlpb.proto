@@ -21,12 +21,17 @@ message GetUsersRequest {
   string authKey = 2;
   uint64 messageId = 3;
 }
+message GetUsersWithSqlInjectRequest {
+  optional string userId = 1;
+  string authKey = 2;
+  uint64 messageId = 3;
+}
 message GetUsersResponse {
   repeated User users = 1;
   uint64 messageId = 2;
 }
 
-service AuthService {
+service SQLService {
   rpc getUsers(GetUsersRequest) returns (GetUsersResponse);
-  rpc getUsersWithSqlInject(GetUsersRequest) returns (GetUsersResponse);
+  rpc getUsersWithSqlInject(GetUsersWithSqlInjectRequest) returns (GetUsersResponse);
 }

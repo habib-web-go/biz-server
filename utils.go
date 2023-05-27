@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 
+	pb "github.com/habib/biz/grpc"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 )
@@ -23,7 +24,7 @@ func startServer() {
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterAuthServiceServer(s, &server{})
+	pb.RegisterSQLServiceServer(s, &server{})
 
 	log.Println("gRPC server listening on port 5052")
 

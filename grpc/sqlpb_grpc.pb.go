@@ -19,126 +19,126 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthService_GetUsers_FullMethodName              = "/sqlInjection.AuthService/getUsers"
-	AuthService_GetUsersWithSqlInject_FullMethodName = "/sqlInjection.AuthService/getUsersWithSqlInject"
+	SQLService_GetUsers_FullMethodName              = "/sqlInjection.SQLService/getUsers"
+	SQLService_GetUsersWithSqlInject_FullMethodName = "/sqlInjection.SQLService/getUsersWithSqlInject"
 )
 
-// AuthServiceClient is the client API for AuthService service.
+// SQLServiceClient is the client API for SQLService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AuthServiceClient interface {
+type SQLServiceClient interface {
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
-	GetUsersWithSqlInject(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
+	GetUsersWithSqlInject(ctx context.Context, in *GetUsersWithSqlInjectRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
 }
 
-type authServiceClient struct {
+type sQLServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
-	return &authServiceClient{cc}
+func NewSQLServiceClient(cc grpc.ClientConnInterface) SQLServiceClient {
+	return &sQLServiceClient{cc}
 }
 
-func (c *authServiceClient) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
+func (c *sQLServiceClient) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
 	out := new(GetUsersResponse)
-	err := c.cc.Invoke(ctx, AuthService_GetUsers_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SQLService_GetUsers_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) GetUsersWithSqlInject(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
+func (c *sQLServiceClient) GetUsersWithSqlInject(ctx context.Context, in *GetUsersWithSqlInjectRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
 	out := new(GetUsersResponse)
-	err := c.cc.Invoke(ctx, AuthService_GetUsersWithSqlInject_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SQLService_GetUsersWithSqlInject_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AuthServiceServer is the server API for AuthService service.
-// All implementations must embed UnimplementedAuthServiceServer
+// SQLServiceServer is the server API for SQLService service.
+// All implementations must embed UnimplementedSQLServiceServer
 // for forward compatibility
-type AuthServiceServer interface {
+type SQLServiceServer interface {
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
-	GetUsersWithSqlInject(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
-	mustEmbedUnimplementedAuthServiceServer()
+	GetUsersWithSqlInject(context.Context, *GetUsersWithSqlInjectRequest) (*GetUsersResponse, error)
+	mustEmbedUnimplementedSQLServiceServer()
 }
 
-// UnimplementedAuthServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedAuthServiceServer struct {
+// UnimplementedSQLServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSQLServiceServer struct {
 }
 
-func (UnimplementedAuthServiceServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
+func (UnimplementedSQLServiceServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
 }
-func (UnimplementedAuthServiceServer) GetUsersWithSqlInject(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
+func (UnimplementedSQLServiceServer) GetUsersWithSqlInject(context.Context, *GetUsersWithSqlInjectRequest) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsersWithSqlInject not implemented")
 }
-func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
+func (UnimplementedSQLServiceServer) mustEmbedUnimplementedSQLServiceServer() {}
 
-// UnsafeAuthServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AuthServiceServer will
+// UnsafeSQLServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SQLServiceServer will
 // result in compilation errors.
-type UnsafeAuthServiceServer interface {
-	mustEmbedUnimplementedAuthServiceServer()
+type UnsafeSQLServiceServer interface {
+	mustEmbedUnimplementedSQLServiceServer()
 }
 
-func RegisterAuthServiceServer(s grpc.ServiceRegistrar, srv AuthServiceServer) {
-	s.RegisterService(&AuthService_ServiceDesc, srv)
+func RegisterSQLServiceServer(s grpc.ServiceRegistrar, srv SQLServiceServer) {
+	s.RegisterService(&SQLService_ServiceDesc, srv)
 }
 
-func _AuthService_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SQLService_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUsersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).GetUsers(ctx, in)
+		return srv.(SQLServiceServer).GetUsers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_GetUsers_FullMethodName,
+		FullMethod: SQLService_GetUsers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetUsers(ctx, req.(*GetUsersRequest))
+		return srv.(SQLServiceServer).GetUsers(ctx, req.(*GetUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_GetUsersWithSqlInject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUsersRequest)
+func _SQLService_GetUsersWithSqlInject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersWithSqlInjectRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).GetUsersWithSqlInject(ctx, in)
+		return srv.(SQLServiceServer).GetUsersWithSqlInject(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_GetUsersWithSqlInject_FullMethodName,
+		FullMethod: SQLService_GetUsersWithSqlInject_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetUsersWithSqlInject(ctx, req.(*GetUsersRequest))
+		return srv.(SQLServiceServer).GetUsersWithSqlInject(ctx, req.(*GetUsersWithSqlInjectRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
+// SQLService_ServiceDesc is the grpc.ServiceDesc for SQLService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AuthService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "sqlInjection.AuthService",
-	HandlerType: (*AuthServiceServer)(nil),
+var SQLService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sqlInjection.SQLService",
+	HandlerType: (*SQLServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "getUsers",
-			Handler:    _AuthService_GetUsers_Handler,
+			Handler:    _SQLService_GetUsers_Handler,
 		},
 		{
 			MethodName: "getUsersWithSqlInject",
-			Handler:    _AuthService_GetUsersWithSqlInject_Handler,
+			Handler:    _SQLService_GetUsersWithSqlInject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
