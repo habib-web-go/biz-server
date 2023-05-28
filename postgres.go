@@ -3,11 +3,15 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 
+	pb "github.com/habib/biz/grpc"
 	_ "github.com/lib/pq"
 )
+
+const UserQuery string = `SELECT "id", "name", "family", "age", "sex", "createdat" FROM "User"`
 
 func runPostgres() {
 	host := os.Getenv("POSTGRES_HOST")
@@ -29,4 +33,25 @@ func runPostgres() {
 		fmt.Println("Error connecting to database:", err)
 		return
 	}
+}
+
+func rowsToUsers(rows *sql.Rows) ([]*pb.User, error) {
+	defer rows.Close()
+	var users []*pb.User
+	for rows.Next() {
+		var user pb.User
+		err := rows.Scan(&user.Id, &user.Name, &user.Family, &user.Age, &user.Sex, &user.CreatedAt)
+		if err != nil {
+			log.Fatal(err)
+			continue
+		}
+		users = append(users, &user)
+	}
+	err := rows.Err()
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return users, nil
+
 }
