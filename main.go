@@ -18,31 +18,38 @@ var (
 )
 
 func (s *server) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
-	userId := req.UserId
+	userId := req.GetUserId()
 	var query string
-	if userId != nil {
-		query = "SELECT * FROM \"User\" WHERE id = $1;"
+	var err error
+	var rows *sql.Rows
+
+	query = `SELECT "id", "name", "family", "age", "sex", "createdat" FROM "User"`
+	if userId != 0 {
+		query = query + ` WHERE "id" = $1;`
+		rows, err = postgresClient.Query(query, userId)
 	} else {
-		query = "SELECT * FROM \"User\" LIMIT 100;"
+		query = query + " LIMIT 100;"
+		rows, err = postgresClient.Query(query)
 	}
-	rows, err := postgresClient.Query(query, userId)
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 	defer rows.Close()
 	var users []*pb.User
 	for rows.Next() {
-		var user *pb.User
+		var user pb.User
 		err := rows.Scan(&user.Id, &user.Name, &user.Family, &user.Age, &user.Sex, &user.CreatedAt)
 		if err != nil {
 			log.Fatal(err)
 			continue
 		}
-		users = append(users, user)
+		users = append(users, &user)
 	}
 	err = rows.Err()
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	// todo set message Id how?
@@ -50,15 +57,19 @@ func (s *server) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb.Get
 	return &pb.GetUsersResponse{Users: users, MessageId: req.GetMessageId() + 1}, nil
 
 }
-func (s *server) getUsersWithSqlInject(ctx context.Context, req *pb.GetUsersWithSqlInjectRequest) (*pb.GetUsersResponse, error) {
+func (s *server) GetUsersWithSqlInject(ctx context.Context, req *pb.GetUsersWithSqlInjectRequest) (*pb.GetUsersResponse, error) {
+	log.Println("halllooo")
 	userId := req.UserId
 	var query string
+	var err error
+	var rows *sql.Rows
 	if userId != nil {
 		query = fmt.Sprintf("SELECT * FROM \"User\" WHERE id = %s;", *userId)
+		rows, err = postgresClient.Query(query, userId)
 	} else {
 		query = "SELECT * FROM \"User\" LIMIT 100;"
+		rows, err = postgresClient.Query(query)
 	}
-	rows, err := postgresClient.Query(query, userId)
 	if err != nil {
 		log.Fatal(err)
 	}

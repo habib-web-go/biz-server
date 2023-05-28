@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS "User" (
     name VARCHAR(128) NOT NULL,
     family VARCHAR(128) NOT NULL,
     age INTEGER CHECK (age > 0),
-    sex VARCHAR(10) CHECK (sex IN ('male', 'female')),
+    sex INTEGER CHECK (sex IN (1, 0)),
     createdAt TIMESTAMPTZ DEFAULT NOW()
 );

@@ -2,7 +2,7 @@ syntax = "proto3";
 package sqlInjection;
 option go_package = "grpc/";
 
-import "google/protobuf/timestamp.proto";
+// import "google/protobuf/timestamp.proto";
 
 enum Sex {
   Man = 0;
@@ -14,7 +14,7 @@ message User {
   uint64 id = 3;
   uint64 age = 4;
   Sex sex = 5;
-  google.protobuf.Timestamp createdAt = 6;
+  string createdAt = 6;
 }
 message GetUsersRequest {
   optional uint64 userId = 1;

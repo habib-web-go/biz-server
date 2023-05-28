@@ -18,7 +18,7 @@ func loadEnv() {
 
 func startServer() {
 
-	lis, err := net.Listen("tcp", ":5052")
+	lis, err := net.Listen("tcp", ":5062")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -26,7 +26,7 @@ func startServer() {
 	s := grpc.NewServer()
 	pb.RegisterSQLServiceServer(s, &server{})
 
-	log.Println("gRPC server listening on port 5052")
+	log.Println("gRPC server listening on port 5062")
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
