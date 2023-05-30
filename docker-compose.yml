@@ -2,25 +2,33 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:${POSTGRES_IMAGE_TAG}
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASS}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - 5432:5432
+    expose:
+      - ${POSTGRES_PORT}
     volumes:
       - postgres-data:/data
       - ./postgres:/scripts:ro
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-U",
+          "${POSTGRES_USER}",
+          "-d",
+          "${POSTGRES_DB}"
+        ]
       interval: 10s
       timeout: 5s
       retries: 3
 
   init-db:
-    image: postgres:latest
+    image: postgres:${POSTGRES_IMAGE_TAG}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASS}
@@ -31,15 +39,17 @@ services:
       postgres:
         condition: service_healthy
     command: sh -c "PGPASSWORD=${POSTGRES_PASS} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h postgres -f /scripts/create_db.sql"
-  # server:
-  #   build: .
-  #   depends_on:
-  #     - postgres
-  #     - init-db
-  #   ports:
-  #     - "5052:5052"
-  #   restart: always
+  biz:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${BIZ_PORT}:${BIZ_PORT}"
+    restart: always
 
 volumes:
   postgres-data:
-  
+networks:
+  biz_network:
+    name: biz_network

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"os"
 
 	pb "github.com/habib/biz/grpc"
 	"github.com/joho/godotenv"
@@ -17,8 +18,8 @@ func loadEnv() {
 }
 
 func startServer() {
-
-	lis, err := net.Listen("tcp", ":5062")
+	port := os.Getenv("BIZ_PORT")
+	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -26,7 +27,7 @@ func startServer() {
 	s := grpc.NewServer()
 	pb.RegisterSQLServiceServer(s, &server{})
 
-	log.Println("gRPC server listening on port 5062")
+	log.Printf("gRPC server listening on port %s\n", port)
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
