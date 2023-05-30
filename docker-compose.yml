@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASS}
       POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - biz_network
     expose:
       - ${POSTGRES_PORT}
     volumes:
@@ -33,23 +35,30 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASS}
       POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - biz_network
     volumes:
       - ./postgres:/scripts:ro
     depends_on:
       postgres:
         condition: service_healthy
+
     command: sh -c "PGPASSWORD=${POSTGRES_PASS} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h postgres -f /scripts/create_db.sql"
+
   biz:
     build: .
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - biz_network
     ports:
       - "${BIZ_PORT}:${BIZ_PORT}"
     restart: always
 
 volumes:
   postgres-data:
+    name: postgres-data
 networks:
   biz_network:
     name: biz_network
