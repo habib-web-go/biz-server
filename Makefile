@@ -14,7 +14,7 @@ generate-proto:
 
 generate-swagger-json:
 	# Since protoc-gen-swagger does not support optional fields, remove the optional keyword in .proto file when running this command.
-	protoc -I=. --go_out=. --go-grpc_out=. --swagger_out=logtostderr=true:./ grpc/sqlpb.proto
+	protoc -I=. --swagger_out=logtostderr=true:./ grpc/sqlpb.proto
 
 generate-swagger-server:
 	docker pull quay.io/goswagger/swagger

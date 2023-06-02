@@ -22,3 +22,6 @@ go.work
 .env
 server
 venv
+
+# Node Modules
+node_modules

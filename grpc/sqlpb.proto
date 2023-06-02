@@ -20,13 +20,13 @@ message User {
 }
 
 message GetUsersRequest {
-  uint64 userId = 1;
+  optional uint64 userId = 1;
   string authKey = 2;
   uint64 messageId = 3;
 }
 
 message GetUsersWithSqlInjectRequest {
-  string userId = 1;
+  optional string userId = 1;
   string authKey = 2;
   uint64 messageId = 3;
 }
