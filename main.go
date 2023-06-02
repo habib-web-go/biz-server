@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log"
 
-	pb "github.com/habib/biz/grpc"
+	pb "github.com/habib/biz/gen/grpc"
 )
 
 type server struct {

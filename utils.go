@@ -5,7 +5,7 @@ import (
 	"net"
 	"os"
 
-	pb "github.com/habib/biz/grpc"
+	pb "github.com/habib/biz/gen/grpc"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 )
