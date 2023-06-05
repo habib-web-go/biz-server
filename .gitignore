@@ -25,3 +25,4 @@ venv
 
 # Node Modules
 node_modules
+.idea

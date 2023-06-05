@@ -19,7 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/habib/biz/restapi/operations/sql_service"
+	"github.com/habib-web-go/biz-server/restapi/operations/sql_service"
 )
 
 // NewGrpcSqlpbProtoAPI creates a new GrpcSqlpbProto instance

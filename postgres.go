@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	pb "github.com/habib/biz/gen/grpc"
+	pb "github.com/habib-web-go/biz-server/gen/grpc"
 	_ "github.com/lib/pq"
 )
 

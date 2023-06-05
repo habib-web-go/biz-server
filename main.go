@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log"
 
-	pb "github.com/habib/biz/gen/grpc"
+	pb "github.com/habib-web-go/biz-server/gen/grpc"
 )
 
 type server struct {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"github.com/habib/biz/models"
+	"github.com/habib-web-go/biz-server/models"
 )
 
 // SQLServiceGetUsersWithSQLInjectOKCode is the HTTP code returned for type SQLServiceGetUsersWithSQLInjectOK

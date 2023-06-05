@@ -10,8 +10,8 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"github.com/habib/biz/restapi/operations"
-	"github.com/habib/biz/restapi/operations/sql_service"
+	"github.com/habib-web-go/biz-server/restapi/operations"
+	"github.com/habib-web-go/biz-server/restapi/operations/sql_service"
 )
 
 //go:generate swagger generate server --target ../../biz-server --name GrpcSqlpbProto --spec ../sqlpb.swagger.json --principal interface{}

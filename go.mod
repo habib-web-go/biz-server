@@ -1,4 +1,4 @@
-module github.com/habib/biz
+module github.com/habib-web-go/biz-server
 
 go 1.20
 
